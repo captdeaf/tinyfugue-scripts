@@ -7,7 +7,7 @@
 
 ; By default, ignore all the junk we get for the wizard.
 ; This is last in priority so we can other stuff we want as needed.
-/def -ag -q -p0 -mregexp -wdr -t"^\034GS" dr_gag_special
+/def -ag -p0 -mregexp -wdr -t"^\034?GS" dr_gag_special
 
 ; time now and end of next roundtime.
 /if (%{dr_tnow} =~ "") \
@@ -96,11 +96,11 @@
 /endif
 
 ; When round timer ends.
-/def -F -p9 -mregexp -wdr -t"^\034GSQ(\d+)" dr_get_timeout=\
+/def -ag -F -p9 -mregexp -wdr -t"^\034?GSQ(\d+)" dr_get_timeout=\
   /set dr_tnext=%{P1}
 
 ; Time now. This is sent secondly, oddly.
-/def -F -p9 -mregexp -wdr -t"^\034GSq(\d+)" dr_get_timenow=\
+/def -ag -F -p9 -mregexp -wdr -t"^\034?GSq(\d+)" dr_get_timenow=\
   /set dr_tnow=%{P1} %;\
   /set dr_tnowset=$[time()]
 
@@ -111,10 +111,10 @@
 
 ; What's carried in my hands?
 
-/def -F -p9 -mregexp -wdr -t"^\034GSm.{30}(\S.*\S)\s*$" dr_get_rhand=\
+/def -ag -F -p9 -mregexp -wdr -t"^\034?GSm.{30}(\S.*\S)\s*$" dr_get_rhand=\
   /set dr_rhand=%{P1}
 
-/def -F -p9 -mregexp -wdr -t"^\034GSl.{30}(\S.*\S)\s*$" dr_get_lhand=\
+/def -ag -F -p9 -mregexp -wdr -t"^\034?GSl.{30}(\S.*\S)\s*$" dr_get_lhand=\
   /set dr_lhand=%{P1}
 
 /def dr_stow=\
@@ -128,7 +128,7 @@
     /endif %;\
   /endif
 
-/def -F -p9 -mregexp -wdr -t"^\034GSq(\d+)" dr_get_timenow=\
+/def -ag -F -p9 -mregexp -wdr -t"^\034?GSq(\d+)" dr_get_timenow=\
   /set dr_tnow=%{P1} %;\
   /set dr_tnowset=$[time()]
 
