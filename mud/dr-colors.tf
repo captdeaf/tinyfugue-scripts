@@ -39,6 +39,8 @@
 /dra_color_many yellow=Outdoorsmanship:=Skinning:=Scouting:=Engineering:=Outfitting:=Scholarship:
 /dra_color_many yellow=Mechanical Lore:=Appraisal:=Performance:=Tactics:
 
+/dra_color_it red=mind lock\\s+\\(34/34\\)
+
 ; Color paths and exits. These are regexps.
 /dra_color_it yellow=^Obvious paths:.*
 /dra_color_it yellow=^Obvious exits:.*
