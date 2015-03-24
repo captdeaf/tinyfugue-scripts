@@ -17,7 +17,7 @@
 
 /def -t"That tool does not seem suitable for that task." -wdr dr_craft_stop=\
   /set dr_cycle= %;\
-  /repeat -1 1 /echo Crafting incomplete - Wrong tool?
+  /repeat -1 1 /echo Crafting incomplete - Wrong tool? Cycle cleared.
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -41,6 +41,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Tailoring.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; tcut 1 8 leather # will make 1 strip of leather 8 yards long.
+; You should be holding nothing.
 /def -p10 -h"SEND tcut * * *" -mglob -wdr dr_craft_tailor_cut=\
   /let mat=%{-3} %;\
   /let count=%{2} %;\
