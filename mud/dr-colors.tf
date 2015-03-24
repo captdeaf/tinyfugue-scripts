@@ -1,130 +1,66 @@
 ;; Skills
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Shield Usage:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Leather Armor:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Light Chain:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Heavy Chain:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Light Plate:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Heavy Plate:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Parry Ability:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Multi Opponent:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Light Edged:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Medium Edged:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Heavy Edged:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Twohanded Edged:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Light Blunt:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Medium Blunt:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Large Blunt:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Twohanded Blunt:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Slings:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Staff Sling:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Short Bow:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Long Bow:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Composite Bow:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Light Crossbow:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Heavy Crossbow:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Short Staff:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Quarter Staff:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Pikes:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Halberds:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Light Thrown:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Heavy Thrown:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Brawling:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Primary Magic:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Harness Ability:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Power Perceive:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Magical Devices:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Targeted Magic:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Evasion:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Climbing:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Perception:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Tracking:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Scouting:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Hiding:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Lockpicking:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Disarm Traps:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Stalking:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Stealing:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'First Aid:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Foraging:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Escaping:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Backstab:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Skinning:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Swimming:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Scholarship:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Mechanical Lore:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Musical Theory:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Appraisal:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Teaching:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Trading:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Animal Lore:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Percussion:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Strings:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Winds:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Vocals:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Transference:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Astrology:'
-/def -wdr -F -p99 -PhCyellow -mregexp -t'Empathy:'
-/def -wdr -F -p99 -PhCred -mregexp -t'mind lock'
-/def -wdr -F -p99 -ahCcyan -mregexp -t'SKILL:.*'
 
+; Wipe all previously set colors.
+/purge dra_*
 
-;;; Other stuff.
+; Used for marking all colorations dra_##
+/set dra_id=0
 
-/def -wdr -F -ahCyellow -mregexp -t'^Obvious paths:.*'
-/def -wdr -F -ahCyellow -mregexp -t'^Obvious exits:.*'
-/def -wdr -F -ahCmagenta -mregexp -t'^\[.*\]'
+; /dra_color_it <color>=<regexp>
+/def dra_color_it=\
+  /split %{*} %;\
+  /let color=%{P1} %;\
+  /let text=%{P2} %;\
+  /set dra_id=$[1+%{dra_id}] %;\
+  /def -wdr -F -p66 -PhC%{color} -mregexp -t'%{text}' dra_%{dra_id} 
 
-/def -wdr -p100 -ahuBCmagenta -mregexp -t'^A .* notices you trying to stalk it.'
+; /dra_color_many <color>=<pattern1>=<pattern2>=<pattern3>, separated by =.
+; If you need = in the pattern, then use dra_color_it.
+/def dra_color_many=\
+  /split %{*} %;\
+  /let color=%{P1} %;\
+  /let items=%{P2} %;\
+  /split %{items} %;\
+  /let cur=%{P1} %;\
+  /let rest=%{P2} %;\
+  /dra_color_it %{color}=%{cur} %;\
+  /if (strlen(%{rest})) \
+    /repeat -0 1 /dra_color_many %{color}=%{rest} %;\
+  /endif
 
-/def -wdr -F -PhCyellow -mregexp -t'[ ][Yy]ou[\. ]'
-/def -wdr -F -PhCyellow -mregexp -t'^[Yy]ou[\. ]'
-/def -wdr -p100 -PhCcyan -mregexp -t'^You whisper to [A-Za-z]+'
-/def -wdr -p99 -PhCgreen -mregexp -t'^You [A-Za-z]*[ ]*say,'
-/def -wdr -p99 -PhCgreen -mregexp -t'^You [A-Za-z]*[ ]*hiss,'
-/def -wdr -p99 -PhCgreen -mregexp -t'^You [A-Za-z]*[ ]*say in [A-Za-z]+,'
-/def -wdr -p99 -PhCgreen -mregexp -t'^You [A-Za-z]*[ ]*ask,'
-/def -wdr -p99 -PhCgreen -mregexp -t'^You [A-Za-z]*[ ]*ask in [A-Za-z]+,'
-/def -wdr -p99 -PhCgreen -mregexp -t'^You [A-Za-z]*[ ]*exclaim,'
-/def -wdr -p99 -PhCgreen -mregexp -t'^You [A-Za-z]*[ ]*exclaim in [A-Za-z]+,'
-/def -wdr -p99 -PhCgreen -mregexp -t'You belt out,'
-/def -wdr -p99 -F -PhCgreen -mregexp -t'^You hear the voice of [A-Za-z]+ [A-Za-z]+, '
-/def -wdr -p99 -F -PhCgreen -mregexp -t'^You hear the voice of [A-Za-z]+ [A-Za-z]+ in [A-Za-z]+, '
-/def -wdr -p99 -F -PhCyellow -mregexp -t'^Your mind hears [A-Za-z]+ thinking, '
-/def -wdr -p99 -F -PhCgreen -mregexp -t'^You hear the ghostly voice of [A-Za-z]+ [A-Za-z]+, '
-/def -wdr -p100 -ahBCcyan -mregexp -t'^You have no significant injuries.'
-/def -wdr -ahCred -mregexp -t'touches you'
-/def -wdr -F -PhCgreen -mregexp -t'No Ranger stands alone'
-/def -wdr -F -PhCgreen -mregexp -t'No ranger stands alone'
+; Color all skills to be yellow
+/dra_color_many yellow=Shield Usage:=Light Armor:=Chain Armor:=Brigandine:=Plate Armor:=Defending:=Parry Ability:
+/dra_color_many yellow=Small Edged:=Large Edged:=Twohanded Edged:=Small Blunt:=Large Blunt:=Twohanded Blunt:
+/dra_color_many yellow=Slings:=Bow:=Crossbow:=Staves:=Polearms:=Light Thrown:=Heavy Thrown:=Brawling:
+/dra_color_many yellow=Offhand Weapon:=Melee Mastery:=Missile Mastery:
+/dra_color_many yellow=Life Magic:=Attunement:=Arcana:=Targeted Magic:
+/dra_color_many yellow=Augmentation:=Debilitation:=Utility:=Warding:=Sorcery:
+/dra_color_many yellow=Evasion:=Athletics:=Perception:=Stealth:=Locksmithing:=First Aid:
+/dra_color_many yellow=Outdoorsmanship:=Skinning:=Scouting:=Engineering:=Outfitting:=Scholarship:
+/dra_color_many yellow=Mechanical Lore:=Appraisal:=Performance:=Tactics:
 
-/def -wdr -F -ahCred -mregexp -t'^The bandages binding your.*'
-/def -wdr -F -ahCmagenta -mregexp -t'You\'ve gained a new rank in.*'
-/def -wdr -F -ahCbgred -mregexp -t'^You think you have your best shot possible now.'
-/def -wdr -F -PhCcyan -mregexp -t'^Also in room: '
-/def -wdr -F -PhCcyan -mregexp -t'^Also in the room: '
-/def -wdr -F -PhCcyan -mregexp -t'^Also here: '
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^[A-Za-z]+[ ]*[A-Za-z]* growls, '
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^[A-Za-z]+[ ]*[A-Za-z]* hisses, '
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^[A-Za-z]+[ ]*[A-Za-z]* says, '
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^[A-Za-z]+[ ]*[A-Za-z]* says to [A-Za-z]+, '
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^[A-Za-z]+[ ]*[A-Za-z]* says in [A-Za-z]+, '
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^[A-Za-z]+[ ]*[A-Za-z]* asks, ' 
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^[A-Za-z]+[ ]*[A-Za-z]* asks [A-Za-z]+, ' 
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^[A-Za-z]+[ ]*[A-Za-z]* asks in [A-Za-z]+, ' 
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^[A-Za-z]+[ ]*[A-Za-z]* exclaims, '
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^[A-Za-z]+[ ]*[A-Za-z]* exclaims in [A-Za-z]+, '
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^[A-Za-z]+[ ]*[A-Za-z]* yells, '
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^[A-Za-z]+[ ]*[A-Za-z]* yells in [A-Za-z]+, '
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^From all around you a voice echoes, '
-/def -wdr -F -PhBCcyan -p99 -mregexp -t'^[A-Za-z]+ whispers, '
-/def -wdr -F -PhBCcyan -p99 -mregexp -t'^[A-Za-z]+ whispers to your group, '
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^You hear [A-Za-z]+ yell, ' 
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^From the darkness [A-Za-z]* says'
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^Into the darkness you say'
-/def -wdr -F -PhBCgreen -p99 -mregexp -t'^Into the darkness you ask'
+; Color paths and exits. These are regexps.
+/dra_color_it yellow=^Obvious paths:.*
+/dra_color_it yellow=^Obvious exits:.*
 
-/def -wdr -F -ahCyellow -p99 -mregexp -t'^The [A-Za-z]+ advance towards you'
-/def -wdr -F -ahBCred -p99 -mregexp -t'^The .* closes to [A-Za-z]+ range on you'
-/def -wdr -F -ahBCred -p99 -mregexp -t'^A .* closes to [A-Za-z]+ range on you'
-/def -wdr -F -ahBCred -p99 -mregexp -t'^An .* closes to [A-Za-z]+ range on you'
-/def -wdr -F -ahBCred -p99 -mregexp -t'^You close to [A-Za-z]+ range on the .*'
+; Room / area title.
+/dra_color_it magenta=^\\[.*\\]
 
+; You speaking, in green.
+/dra_color_it green=^\\w+ \\w*\\s*(say|hiss|ask|exclaim|growl|yell)(\\sin \\w+)?,
+
+; Somebody else speaking, in green.
+/dra_color_it green=^\\w+ \\w*\\s*(says|hisses|asks|exclaims|yells|growls)(\\sin \\w+)?,
+
+; No significant injuries
+/dra_color_it cyan=^You have no significant injuries.
+/dra_color_it cyan=^Your body feels at full strength.
+/dra_color_it cyan=^Your spirit feels full of life.
+/dra_color_it red=^.* touches you.$
+
+/dra_color_it cyan=^Also in (the )?room: 
+/dra_color_it cyan=^Also here: 
+/dra_color_it cyan=^\\s*You also see
+
+; Best shot:
+/dra_color_it bgred=^You think you have your best shot possible now.
