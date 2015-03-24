@@ -49,7 +49,7 @@
   /let len=%{3} %;\
   /drc get %{mat} from back %;\
   /repeat -1 %{count} /drc get yardstick=mark my %{mat} to %{len} yards=stow my yardstick=get scissors=cut my %{mat} with my scissors=stow my scissors %;\
-  /repeat -$[1+%{count}] 1 /drc stow my %{mat}=~$[strrep("=stow %{mat}", %{count})]
+  /repeat -$[1+%{count}] 1 /drc stow my %{mat}=~$[strrep(strcat("=stow ",%{mat}), %{count})]
 
 /def -p10 -h"SEND tailor * *" -mglob -wdr dr_craft_tailor_start=\
   /set dr_crafting=%{-2} %;\
