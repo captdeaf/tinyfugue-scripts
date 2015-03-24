@@ -27,13 +27,34 @@
   /drc wear my backpack=store default in my backpack %;\
   /drc close vault=go door=go arch
 
-; Tailoring.
-/def -p10 -h"SEND tcut * *" -mglob -wdr dr_tailor_cut=\
-  /let mat=%{-2} %;\
-  /let len=%{2} %;\
-  /drc get yardstick=get %{mat}=mark %{mat} to %{len} yards=stow my yardstick %;\
-  /drc get scissors=cut my %{mat} with my scissors=stow my scissors %;\
-  /drc stow my %{mat}=get %{mat}
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; Tanning, for tailoring leather armor from my own kills.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+/def -p10 -h"SEND tan *" -mglob -wdr dr_tan_item=\
+  /let item=%{-1} %;\
+  /set dr_crafting=$(/last %{item}) %;\
+  /echo "Scraping '%{item}'" %;\
+  /dr get %{item} from bundle %;\
+  /dr get hide scraper %;\
+  /dr scrape %{dr_crafting} with scraper careful %;\
+  /set dr_cycle=scrape %{dr_crafting} with scraper careful
+
+; Complete tanning.
+/def -mglob -t"The * looks as clean as you can make it." -wdr dr_craft_scrape_done=\
+  /drc stow my hide scraper %;\
+  /drc get tanning lotion=pour tanning lotion on %{dr_crafting}=~=stow tanning lotion=stow %{dr_crafting} %;\
+  /set dr_cycle=
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; Tailoring.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+/def -p10 -h"SEND tcut * * *" -mglob -wdr dr_tailor_cut=\
+  /let mat=%{-3} %;\
+  /let count=%{2} %;\
+  /let len=%{3} %;\
+  /drc get %{mat} from back %;\
+  /repeat -1 %{count} /drc get yardstick=mark my %{mat} to %{len} yards=stow my yardstick=get scissors=cut my %{mat} with my scissors=stow my scissors %;\
+  /repeat -$[1+%{count}] 1 /drc stow my %{mat}=/repeat -1 %{count} \drc stow %{mat}
 
 /def -p10 -h"SEND tailor * *" -mglob -wdr dr_tailor_start=\
   /set dr_crafting=%{-2} %;\
@@ -61,17 +82,17 @@
 /def -mglob -t"* and could use some pins to *" -wdr dr_craft_pin=\
   /drc get pins=~=poke my %{dr_crafting} with my pins=~=stow my pins
 
-/def -mglob -t"* deep crease develops along *" -wdr dr_craft_slickstone_1=\
+/def -mglob -t"* deep crease develops along *" -wdr dr_craft_slickstone=\
   /drc get slickstone=~=rub my %{dr_crafting} with my slickstone=~=stow my slickstone
 
 /def -mglob -t"* wrinkles from all the handling and could use *" -wdr dr_craft_slickstone_2=\
-  /drc get slickstone=~=rub my %{dr_crafting} with my slickstone=~=stow my slickstone
+  /dr_craft_slickstone
 
-/def -mglob -t"*One leather piece is too thick for the needle to penetrate *" -wdr dr_craft_awl_1=\
+/def -mglob -t"*One leather piece is too thick for the needle to penetrate *" -wdr dr_craft_awl=\
   /drc get awl=~=poke my %{dr_crafting} with my awl=~=stow my awl
 
 /def -mglob -t"*A critical section of leather needs holes punched*" -wdr dr_craft_awl_2=\
-  /drc get awl=~=poke my %{dr_crafting} with my awl=~=stow my awl
+  /dr_craft_awl
 
 /def -mglob -t"You need another finished small cloth padding*" -wdr dr_craft_padding_small=\
   /drc get small padding=~=assemble my %{dr_crafting} with my padding
@@ -108,17 +129,52 @@
   /drc study book=~=stow my book=get knitting needles=get yarn=knit my yarn with my needles=~=stow my yarn %;\
   /set dr_cycle=knit my needles
 
-/def -mglob -t"Now the needles must be turned*" -wdr dr_craft_knit_turn_1=\
+/def -mglob -t"Now the needles must be turned*" -wdr dr_craft_knit_turn=\
   /drc turn my needles
 
 /def -mglob -t"Some ribbing should be added next*" -wdr dr_craft_knit_turn_2=\
-  /drc turn my needles
+  /dr_craft_knit_turn
 
-/def -mglob -t"Next the needles must be pushed" -wdr dr_craft_knit_push_1=\
+/def -mglob -t"Next the needles must be pushed" -wdr dr_craft_knit_push=\
   /drc push my needles
 
 /def -mglob -t"* ready to be pushed *" -wdr dr_craft_knit_push_2=\
-  /drc push my needles
+  /dr_craft_knit_push
 
 /def -mglob -t"The garment is nearly complete and now must be cast off*" -wdr dr_craft_knit_cast=\
   /drc cast my needles=~=stow my needles
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; Engineering - Carving, bone and stone.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+/def -p10 -h"SEND unstack *" -mglob -wdr dr_carving_unstack=\
+  /let count=%{2} %;\
+  /drc get stack=mark stack at %{count} pieces %;\
+  /drc get bone saw=cut my stack with my bone saw=stow my bone saw %;\
+  /drc stow stack=get stack
+
+; Bonecarving loop.
+/def -p10 -h"SEND bcarve *" -mglob -wdr dr_carve_bones=\
+  /set dr_crafting=%{-1} %;\
+  /echo Crafting '%{dr_crafting}', from 'bone stack' %;\
+  /drc study my book=~=stow my book=get bone saw=~=carve my stack with my bone saw=~=stow my bone saw %;\
+  /set dr_cycle=/dr_saw_it
+
+/def dr_saw_it=\
+  /drc get bone saw=carve my %{dr_crafting} with my bone saw=~=stow my bone saw
+
+/def -mglob -t"Once finished you realize the * has developed an uneven texture along its surface." -wdr dr_craft_rasp=\
+  /drc get rasp=scrape my %{dr_crafting} with my rasp=~=stow rasp
+
+/def -mglob -t"When you have finished working you determine the * is uneven." -wdr dr_craft_rasp_2=\
+  /dr_craft_rasp
+
+; Haven't seen this yet, but it's there..
+/def -mglob -t"nomatchmefoo" -wdr dr_craft_polish_1=\
+  /drc get polish=apply polish to %{dr_crafting}=~=stow polish
+
+; Or this:
+; If the carving results in jagged edges, RUB <item> WITH RIFFLERS.
+
+/def -mglob -t"nomatchmefoo2" -wdr dr_craft_riffler_1=\
+  /drc get rifflers=rub %{dr_crafting} with rifflers=~=stow rifflers
