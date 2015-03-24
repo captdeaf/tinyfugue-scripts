@@ -7,30 +7,18 @@
 ; craft item, maybe eventually macro it.
 ; /def -p10 -h"SEND craft *" -wdr dr_craft=???
 
-; Swapping backpacks in the vault.
-; I have:
-;   tan: Tailoring
-;   red: forging
-;   black: engineering
-;   green: adventuring (default)
-;
-; vaultswap <color>, while standing in carousel, will go through ironwood
-; arch, pull lever, etc etc, place all backpacks in vaults, then get
-; the desired backpack. It also auto-sets the "store default"
-/def -p10 -h"SEND vaultswap *" -mglob -wdr dr_vault_swap_backpack=\
-  /let color=%{-1} %;\
-  /dr_stow %{dr_lhand} %;\
-  /dr_stow %{dr_rhand} %;\
-  /drc go ironwood arch=pull lever=go door=open vault %;\
-  /drc remove backpack=put my backpack in vault%;\
-  /drc get %{color} backpack from vault %;\
-  /drc wear my backpack=store default in my backpack %;\
-  /drc close vault=go door=go arch
+/def dr_craft_complete=\
+  /drc get logbook=bundle my %{dr_crafting} with my logbook=stow my logbook=get book
+
+/def -mglob -t"Applying the final touches, you complete working*" -wdr dr_craft_complete=\
+  /set dr_cycle= %;\
+  /echo Crafting %{dr_crafting} complete. Clearing cycle. %;\
+  /dr_craft_complete
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Tanning, for tailoring leather armor from my own kills.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-/def -p10 -h"SEND tan *" -mglob -wdr dr_tan_item=\
+/def -p10 -h"SEND tan *" -mglob -wdr dr_craft_tan_item=\
   /let item=%{-1} %;\
   /set dr_crafting=$(/last %{item}) %;\
   /echo "Scraping '%{item}'" %;\
@@ -48,29 +36,26 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Tailoring.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-/def -p10 -h"SEND tcut * * *" -mglob -wdr dr_tailor_cut=\
+/def -p10 -h"SEND tcut * * *" -mglob -wdr dr_craft_tailor_cut=\
   /let mat=%{-3} %;\
   /let count=%{2} %;\
   /let len=%{3} %;\
   /drc get %{mat} from back %;\
   /repeat -1 %{count} /drc get yardstick=mark my %{mat} to %{len} yards=stow my yardstick=get scissors=cut my %{mat} with my scissors=stow my scissors %;\
-  /repeat -$[1+%{count}] 1 /drc stow my %{mat}=/repeat -1 %{count} \drc stow %{mat}
+  /repeat -$[1+%{count}] 1 /drc stow my %{mat}=~$[strrep("=stow %{mat}", %{count})]
 
-/def -p10 -h"SEND tailor * *" -mglob -wdr dr_tailor_start=\
+/def -p10 -h"SEND tailor * *" -mglob -wdr dr_craft_tailor_start=\
   /set dr_crafting=%{-2} %;\
   /echo Crafting '%{-2}', from '%{2}' %;\
   /drc study my book=~=stow my book=get scissors=cut my %{2} with my scissors=~=stow my scissors %;\
-  /set dr_cycle=/dr_sew_it
-
-/def dr_tailor_done=\
-  /drc get logbook=bundle my %{dr_crafting} with my logbook=stow my logbook=get book
+  /set dr_cycle=/dr_craft_sew_it
 
 ; Tailoring needs
-/def -p10 -h"SEND sew *" -mglob -wdr dr_sew=\
+/def -p10 -h"SEND sew *" -mglob -wdr dr_craft_sew=\
   /set dr_crafting=%{-1} %;\
-  /set dr_cycle=/dr_sew_it
+  /set dr_cycle=/dr_craft_sew_it
 
-/def dr_sew_it=\
+/def dr_craft_sew_it=\
   /drc get sewing needles=push my %{dr_crafting} with my needles=~=stow my sewing needles
 
 /def -mglob -t"* dimensions appear to have shifted and could benefit from some remeasuring." -wdr dr_craft_measure=\
@@ -118,13 +103,8 @@
   /set dr_cycle= %;\
   /echo Crafting %{dr_crafting} complete, badly?. Clearing cycle.
 
-/def -mglob -t"Applying the final touches, you complete working*" -wdr dr_craft_complete_4=\
-  /set dr_cycle= %;\
-  /echo Crafting %{dr_crafting} complete. Clearing cycle. %;\
-  /dr_tailor_done
-
 ; Knitting needs
-/def -p10 -h"SEND knit *" -mglob -wdr dr_knit=\
+/def -p10 -h"SEND knit *" -mglob -wdr dr_craft_knit=\
   /set dr_crafting=%{-1} %;\
   /drc study book=~=stow my book=get knitting needles=get yarn=knit my yarn with my needles=~=stow my yarn %;\
   /set dr_cycle=knit my needles
@@ -147,20 +127,22 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Engineering - Carving, bone and stone.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-/def -p10 -h"SEND unstack *" -mglob -wdr dr_carving_unstack=\
+; unstack 1 3 will create one stack of 3 bones.
+/def -p10 -h"SEND unstack * *" -mglob -wdr dr_craft_carving_unstack=\
   /let count=%{2} %;\
-  /drc get stack=mark stack at %{count} pieces %;\
-  /drc get bone saw=cut my stack with my bone saw=stow my bone saw %;\
-  /drc stow stack=get stack
+  /let num=%{3} %;\
+  /drc get stack from back=get bone saw %;\
+  /repeat -1 %{count} /drc mark my stack at %{num} pieces=cut my stack with my bone saw %;\
+  /repeat -$[1+%{count}] 1 /drc stow my bone saw=stow my stack=~$[strrep("=stow stack",%{count})]
 
 ; Bonecarving loop.
-/def -p10 -h"SEND bcarve *" -mglob -wdr dr_carve_bones=\
+/def -p10 -h"SEND bcarve *" -mglob -wdr dr_craft_carve_bones=\
   /set dr_crafting=%{-1} %;\
   /echo Crafting '%{dr_crafting}', from 'bone stack' %;\
   /drc study my book=~=stow my book=get bone saw=~=carve my stack with my bone saw=~=stow my bone saw %;\
-  /set dr_cycle=/dr_saw_it
+  /set dr_cycle=/dr_craft_saw_it
 
-/def dr_saw_it=\
+/def dr_craft_saw_it=\
   /drc get bone saw=carve my %{dr_crafting} with my bone saw=~=stow my bone saw
 
 /def -mglob -t"Once finished you realize the * has developed an uneven texture along its surface." -wdr dr_craft_rasp=\
@@ -170,11 +152,11 @@
   /dr_craft_rasp
 
 ; Haven't seen this yet, but it's there..
-/def -mglob -t"nomatchmefoo" -wdr dr_craft_polish_1=\
+/def -mglob -t"Upon finishing you see some discolored areas on the *" -wdr dr_craft_polish=\
   /drc get polish=apply polish to %{dr_crafting}=~=stow polish
 
 ; Or this:
 ; If the carving results in jagged edges, RUB <item> WITH RIFFLERS.
 
-/def -mglob -t"nomatchmefoo2" -wdr dr_craft_riffler_1=\
+/def -mglob -t"nomatchmefoo2" -wdr dr_craft_riffler=\
   /drc get rifflers=rub %{dr_crafting} with rifflers=~=stow rifflers
