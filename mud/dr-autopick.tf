@@ -2,11 +2,12 @@
 /set dr_picking=
 /def dr_queue_disarm=\
   /drc disarm id=~=disarm=~=disarm analy=~=disarm harvest=~=empty left %;\
-  /drc get lockpick=~=pick id=~=pick blind=~=stow lockpick %;\
+  /drc get lockpick=~=pick id=~=pick blind=~=~=stow lockpick %;\
   /drc open %{dr_picking}=~=fill my pouch with my %{dr_picking} %;\
   /drc get coin from %{dr_picking}=~=get coin from %{dr_picking}=~=get coin from %{dr_picking}=~=get coin from %{dr_picking} %;\
   /drc dismantle %{dr_picking}
-/def -p10 -h"SEND pickit *" -wdr dr_pickit=\ /set dr_picking=%{-1} %;\
+/def -p10 -h"SEND pickit *" -wdr dr_pickit=\
+  /set dr_picking=%{-1} %;\
   /echo Auto-picking %{dr_picking} ...%;\
   /dr_queue_disarm
 /def -t"Careful probing of the * fails to reveal to you what type of trap protects it." -mglob -wdr drt_redisarm_id=\
@@ -34,5 +35,5 @@
   /dr pick blind
 
 ; Lockpick breaks
-/def -t"You * you discard the now useless lockpick." -mglob -wdr drt_lockpick_break=\
-  /dr get lockpick
+/def -t"You quickly notice * you discard the now useless lockpick." -mglob -wdr drt_lockpick_break=\
+  /dr get lockpick=pick blind
