@@ -7,13 +7,18 @@
 ; craft item, maybe eventually macro it.
 ; /def -p10 -h"SEND craft *" -wdr dr_craft=???
 
-/def dr_craft_complete=\
+/def dr_craft_bundle=\
   /drc get logbook=bundle my %{dr_crafting} with my logbook=stow my logbook=get book
 
 /def -mglob -t"Applying the final touches, you complete working*" -wdr dr_craft_complete=\
   /set dr_cycle= %;\
-  /echo Crafting %{dr_crafting} complete. Clearing cycle. %;\
-  /dr_craft_complete
+  /repeat -1 1 /echo Crafting %{dr_crafting} complete. Clearing cycle. %;\
+  /dr_craft_bundle
+
+/def -t"That tool does not seem suitable for that task." -wdr dr_craft_stop=\
+  /set dr_cycle= %;\
+  /repeat -1 1 /echo Crafting incomplete - Wrong tool?
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Tanning, for tailoring leather armor from my own kills.
@@ -93,15 +98,15 @@
 
 /def -mglob -t"You cannot figure out how to do that*" -wdr dr_craft_complete_1=\
   /set dr_cycle= %;\
-  /echo Crafting %{dr_crafting} complete, badly?. Clearing cycle.
+  /repeat -1 1 /echo Crafting %{dr_crafting} complete, badly?. Clearing cycle.
 
 /def -mglob -t"You realize that cannot be repaired, and stop*" -wdr dr_craft_complete_2=\
   /set dr_cycle= %;\
-  /echo Crafting %{dr_crafting} complete, badly?. Clearing cycle.
+  /repeat -1 1 /echo Crafting %{dr_crafting} complete, badly?. Clearing cycle.
 
 /def -mglob -t"*not damaged enough to*" -wdr dr_craft_complete_3=\
   /set dr_cycle= %;\
-  /echo Crafting %{dr_crafting} complete, badly?. Clearing cycle.
+  /repeat -1 1 /echo Crafting %{dr_crafting} complete, badly?. Clearing cycle.
 
 ; Knitting needs
 /def -p10 -h"SEND knit *" -mglob -wdr dr_craft_knit=\
@@ -158,5 +163,5 @@
 ; Or this:
 ; If the carving results in jagged edges, RUB <item> WITH RIFFLERS.
 
-/def -mglob -t"nomatchmefoo2" -wdr dr_craft_riffler=\
+/def -mglob -t"Upon completion you notice several rough, jagged shards protruding *" -wdr dr_craft_riffler=\
   /drc get rifflers=rub %{dr_crafting} with rifflers=~=stow rifflers
