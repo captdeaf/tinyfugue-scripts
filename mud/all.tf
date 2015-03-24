@@ -3,6 +3,7 @@
 
 ; Useful stuff.
 /require .tf/mud/dr-autopick.tf
+/require .tf/mud/dr-vaultswap.tf
 /require .tf/mud/dr-crafting.tf
 
 ; Incomplete:
