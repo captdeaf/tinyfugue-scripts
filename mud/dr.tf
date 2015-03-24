@@ -234,9 +234,8 @@
 
 ; Auto-approach:
 ; You must be closer to use tactical abilities on your opponent.
-
 /def -t"You must be closer to use tactical abilities on your opponent." -mglob -wdr drt_cant_analyze=\
-  /dr approach
+  /dr advance
 
 /set dr_autofollow=no
 
