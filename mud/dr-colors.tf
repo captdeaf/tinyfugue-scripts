@@ -54,6 +54,8 @@
 ; Somebody else speaking, in green.
 /dra_color_it green=^\\w+ \\w*\\s*(says|hisses|asks|exclaims|yells|growls)(\\sin \\w+)?,
 
+/dra_color_it yellow=^Your mind hears
+
 ; No significant injuries
 /dra_color_it cyan=^You have no significant injuries.
 /dra_color_it cyan=^Your body feels at full strength.
