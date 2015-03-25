@@ -7,8 +7,9 @@
 ; craft item, maybe eventually macro it.
 ; /def -p10 -h"SEND craft *" -wdr dr_craft=???
 
+; Added "get %{dr_crafting}" for stonecarving.
 /def dr_craft_bundle=\
-  /drc get logbook=bundle my %{dr_crafting} with my logbook=stow my logbook=get book
+  /drc get logbook=get %{dr_crafting}=bundle my %{dr_crafting} with my logbook=stow my logbook=get book
 
 /def -mglob -t"Applying the final touches, you complete working*" -wdr dr_craft_complete=\
   /set dr_cycle= %;\
@@ -149,6 +150,17 @@
   /drc study my book=~=stow my book=get bone saw=~=carve my stack with my bone saw=~=stow my bone saw %;\
   /set dr_cycle=/dr_craft_saw_it
 
+; Stonecarving loop
+/def -p10 -h"SEND scarve * *" -mglob -wdr dr_craft_carve_stones=\
+  /let mat=%{2} %;\
+  /set dr_crafting=%{-2} %;\
+  /echo Crafting '%{dr_crafting}', from '%{mat}' %;\
+  /drc study my book=~=stow my book=get chisel=tap deed=~=carve %{mat} with my chisel=~=stow my chisel %;\
+  /set dr_cycle=/dr_craft_chisel_it
+
+/def dr_craft_chisel_it=\
+  /drc get chisel=carve %{dr_crafting} with my chisel=~=stow my chisel
+
 /def dr_craft_saw_it=\
   /drc get bone saw=carve my %{dr_crafting} with my bone saw=~=stow my bone saw
 
@@ -165,5 +177,6 @@
 ; Or this:
 ; If the carving results in jagged edges, RUB <item> WITH RIFFLERS.
 
-/def -mglob -t"Upon completion you notice several rough, jagged shards protruding *" -wdr dr_craft_riffler=\
+/def -mglob -t"Upon completion you notice several rough, jagged *" -wdr dr_craft_riffler=\
   /drc get rifflers=rub %{dr_crafting} with rifflers=~=stow rifflers
+
