@@ -6,4 +6,5 @@
   /require %{dr_path}/dr-autopick.tf %;\
   /require %{dr_path}/dr-vaultswap.tf %;\
   /require %{dr_path}/dr-crafting.tf %;\
+  /require %{dr_path}/dr-spells.tf %;\
   /require %{dr_path}/dr-colors.tf
