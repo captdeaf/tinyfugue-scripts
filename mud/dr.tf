@@ -17,6 +17,7 @@
   /set dr_hung=0 %;\
   /set dr_lhand= %;\
   /set dr_rhand= %;\
+  /set dr_lasttypetime=0
 /endif
 
 ; Clear the queues
@@ -58,17 +59,25 @@
     /endif%; \
   /endif
 
+; Set lasttypetime to load time, why not.
+/set dr_lasttypetime=$[time()]
+
 /def dr_dequeue=\
-  /if (strlen(%{dr_queue})) \
-    /split %{dr_queue} %;\
-    /set dr_queue=%{P2} %;\
-    /dr_send %{P1} %;\
-  /elseif (strlen(%{dr_cqueue})) \
-    /split %{dr_cqueue} %;\
-    /set dr_cqueue=%{P2} %;\
-    /dr_send %{P1} %;\
-  /elseif (strlen(%{dr_cycle})) \
-    /set dr_cqueue=%{dr_cycle} %;\
+  /let idle=$[time()-%{dr_lasttypetime}] %;\
+  /if (%{idle} < 600) \
+    /if (strlen(%{dr_queue})) \
+      /split %{dr_queue} %;\
+      /set dr_queue=%{P2} %;\
+      /dr_send %{P1} %;\
+    /elseif (dr_spell_waiting() != 0) \
+      /dr_spell_cast %;\
+    /elseif (strlen(%{dr_cqueue})) \
+      /split %{dr_cqueue} %;\
+      /set dr_cqueue=%{P2} %;\
+      /dr_send %{P1} %;\
+    /elseif (strlen(%{dr_cycle})) \
+      /set dr_cqueue=%{dr_cycle} %;\
+    /endif %;\
   /endif
 
 /def dr_cleanqueue=\
@@ -157,6 +166,10 @@
     /set dr_cqueue=%{*}%;\
   /endif
 
+; For dr_dequeue, so we don't afk train if suddenly called away.
+/def -F -q -p1000 -h"SEND (\S.*)" -mregexp -wdr dr_recordlasttimestamp=\
+  /set dr_lasttypetime=$[time()]
+
 ; Repeat if we get a "... wait" bit. Stick it on front of queue.
 /def -F -q -p1 -h"SEND (\S.*)" -mregexp -wdr dr_recordlast=\
   /set dr_lasttyped=%{P1}
@@ -171,14 +184,19 @@
 /def -p10 -h"SEND dq" -wdr dr_dq=\
   /echo -wdr ## queue: %{dr_queue} %;\
   /echo -wdr ## combat queue: %{dr_cqueue} %;\
-  /echo -wdr ## default cycle: %{dr_cycle}
+  /echo -wdr ## default cycle: %{dr_cycle} %;\
+  /echo -wdr ## %;\
+  /echo -wdr ## spells: %{dr_spell_queue} %;\
+  /echo -wdr ## spell cycle: %{dr_spell_cycle}
 
 ; oops - clear queue.
 /def -p10 -h"SEND oops" -wdr dr_oops=\
   /echo -wdr Oops, clearing queue: %{dr_queue}. %;\
   /set dr_queue= %;\
   /set dr_cycle= %;\
-  /set dr_cqueue=
+  /set dr_cqueue= %;\
+  /set dr_spell_queue= %;\
+  /set dr_spell_cycle=
 
 /def -p10 -h"SEND nodtrain" -wdr dr_nodtrain=\
   /set dr_trains=no
