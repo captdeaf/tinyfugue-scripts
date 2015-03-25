@@ -185,7 +185,7 @@
   /echo -wdr ## combat queue: %{dr_cqueue} %;\
   /echo -wdr ## default cycle: %{dr_cycle} %;\
   /echo -wdr ## %;\
-  /echo -wdr ## spells: %{dr_spell_queue} %;\
+  /echo -wdr ## spells: %{dr_spell_queue} (casting: %{dr_spell_casting}) %;\
   /echo -wdr ## spell cycle: %{dr_spell_cycle} %;\
   /echo -wdr ## %;\
   /echo -wdr ## Idle time: $[trunc(%{dr_idle})] seconds.
@@ -198,9 +198,6 @@
   /set dr_cqueue= %;\
   /set dr_spell_queue= %;\
   /set dr_spell_cycle=
-
-/def -p10 -h"SEND nodtrain" -wdr dr_nodtrain=\
-  /set dr_trains=no
 
 ; Empty hands.
 /def dr_emptyhands=/dr stow left=stow right=wear right

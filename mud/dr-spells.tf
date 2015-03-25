@@ -41,7 +41,7 @@
 /def -p10 -h"SEND zp *" -wdr dr_spell_notarget=\
   /dr_spell_add prep %{-1}
 
-/def -p10 -h"SEND zt *" -wdr dr_spell_notarget=\
+/def -p10 -h"SEND zt *" -wdr dr_spell_target=\
   /dr_spell_add target %{-1}
 
 ; Identify when I start casting.
