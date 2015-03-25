@@ -35,6 +35,7 @@
 
 /def drchecktimer=\
   /let tleft=$[trunc((%{dr_tnext}-%{dr_tnow})-(time()-%{dr_tnowset})+1.8)] %;\
+  /set dr_idle=$[time()-%{dr_lasttypetime}] %;\
   /if (tleft <= 0) \
     /set timeleft= %;\
     /dr_dequeue %;\
@@ -56,7 +57,6 @@
 /eval /set dr_lasttypetime=$[time()]
 
 /def dr_dequeue=\
-  /set dr_idle=$[time()-%{dr_lasttypetime}] %;\
   /if (%{dr_idle} < 600) \
     /if (strlen(%{dr_queue})) \
       /split %{dr_queue} %;\
@@ -152,7 +152,8 @@
   /echo -wdr ## spells: %{dr_spell_queue} (casting: %{dr_spell_casting}) %;\
   /echo -wdr ## spell cycle: %{dr_spell_cycle} %;\
   /echo -wdr ## %;\
-  /echo -wdr ## Idle time: $[trunc(%{dr_idle})] seconds.
+  /echo -wdr ## Idle time: $[trunc(%{dr_idle})] seconds. %;\
+  /echo -wdr ## Left hand: '%{dr_lhand}', right hand: '%{dr_rhand}'
 
 ; oops - clear all queues.
 /def -p10 -h"SEND oops" -wdr dr_oops=\
