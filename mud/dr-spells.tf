@@ -57,6 +57,11 @@
   /dr cast %;\
   /set dr_spell_casting=no
 
+/def -t"Your target pattern dissipates*, but the main spell remains intact." -wdr_spell_retarget=\
+  /dr target %;\
+  /set dr_spell_casting=yes
+
+
 ; spell failure, or runout.
 /def -t"Your concentration slips for a moment, and your spell is lost." -wdr drt_spell_lost=\
   /set dr_spell_casting=no
