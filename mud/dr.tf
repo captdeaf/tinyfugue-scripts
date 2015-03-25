@@ -17,7 +17,6 @@
   /set dr_hung=0 %;\
   /set dr_lhand= %;\
   /set dr_rhand= %;\
-  /set dr_lasttypetime=0
 /endif
 
 ; Clear the queues
@@ -60,11 +59,11 @@
   /endif
 
 ; Set lasttypetime to load time, why not.
-/set dr_lasttypetime=$[time()]
+/eval /set dr_lasttypetime=$[time()]
 
 /def dr_dequeue=\
-  /let idle=$[time()-%{dr_lasttypetime}] %;\
-  /if (%{idle} < 600) \
+  /set dr_idle=$[time()-%{dr_lasttypetime}] %;\
+  /if (%{dr_idle} < 600) \
     /if (strlen(%{dr_queue})) \
       /split %{dr_queue} %;\
       /set dr_queue=%{P2} %;\
@@ -187,7 +186,9 @@
   /echo -wdr ## default cycle: %{dr_cycle} %;\
   /echo -wdr ## %;\
   /echo -wdr ## spells: %{dr_spell_queue} %;\
-  /echo -wdr ## spell cycle: %{dr_spell_cycle}
+  /echo -wdr ## spell cycle: %{dr_spell_cycle} %;\
+  /echo -wdr ## %;\
+  /echo -wdr ## Idle time: $[trunc(%{dr_idle})] seconds.
 
 ; oops - clear queue.
 /def -p10 -h"SEND oops" -wdr dr_oops=\
