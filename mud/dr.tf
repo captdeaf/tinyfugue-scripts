@@ -12,16 +12,26 @@
 /def -ag -F -p9 -mregexp -wdr -t"^\034?GSl.{30}(\S.*\S)\s*$" dr_get_lhand=\
   /set dr_lhand=%{P1}
 
+/def -ag -F -p20 -mregexp -wdr -t"^\034?GSmEmpty\s*$" dr_get_rhand_empty=\
+  /set dr_rhand=
+
+/def -ag -F -p20 -mregexp -wdr -t"^\034?GSlEmpty\s*$" dr_get_lhand_empty=\
+  /set dr_lhand=
+
 /def dr_stow=\
-  /if (%{*} !~ "Empty") \
+  /if (%{*} !~ "") \
     /if (%{*} =~ "longbow") \
-      /dr unload my longbow=stow left=wear my longbow %;\
+      /dr unload=~=stow my arrow=wear my longbow %;\
     /elseif (%{*} =~ "sling") \ \
-      /dr unload my sling=stow left=stow my sling %;\
+      /dr unload=~=stow my rock=stow my sling %;\
     /else \
       /dr stow my %{*} %;\
     /endif %;\
   /endif
+
+/def dr_stow_hands=\
+  /dr_stow %{dr_lhand} %;\
+  /dr_stow %{dr_rhand}
 
 ; Who am I facing?
 /def -F -p9 -mregexp -wdr -t"You turn to face (\S.+?)[,.]" dr_get_enemy=\
