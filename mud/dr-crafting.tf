@@ -155,17 +155,17 @@
   /let mat=%{2} %;\
   /set dr_crafting=%{-2} %;\
   /echo Crafting '%{dr_crafting}', from '%{mat}' %;\
-  /drc study my book=~=stow my book=get chisel=tap deed=~=carve %{mat} with my chisel=~=stow my chisel %;\
+  /drc study my book=~=stow my book=get chisel=carve %{mat} with my chisel=~=stow my chisel %;\
   /set dr_cycle=/dr_craft_chisel_it
 
 /def dr_craft_chisel_it=\
   /drc get chisel=carve %{dr_crafting} with my chisel=~=stow my chisel
 
 /def dr_craft_saw_it=\
-  /drc get bone saw=carve my %{dr_crafting} with my bone saw=~=stow my bone saw
+  /drc get bone saw=carve %{dr_crafting} with my bone saw=~=stow my bone saw
 
 /def -mglob -t"Once finished you realize the * has developed an uneven texture along its surface." -wdr dr_craft_rasp=\
-  /drc get rasp=scrape my %{dr_crafting} with my rasp=~=stow rasp
+  /drc get rasp=scrape %{dr_crafting} with my rasp=~=stow rasp
 
 /def -mglob -t"When you have finished working you determine the * is uneven." -wdr dr_craft_rasp_2=\
   /dr_craft_rasp
