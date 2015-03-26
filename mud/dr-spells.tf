@@ -36,6 +36,7 @@
     /split %{dr_spell_queue} %;\
     /set dr_spell_queue=%{P2} %;\
     /dr %{P1} %;\
+    /set dr_casting=yes %;\
   /endif
 
 /def -p10 -h"SEND zp *" -wdr dr_spell_notarget=\
@@ -46,6 +47,13 @@
 
 ; Identify when I start casting.
 /def -mglob -t"With * movements you prepare your body*" -wdr drt_spell_casting=\
+  /set dr_spell_casting=yes
+
+; Identify if I'm already casting.
+/def -mglob -t"You are already preparing the * spell!" -wdr drt_spell_already_casting=\
+  /set dr_spell_casting=yes
+
+/def -mglob -t"You have already fully prepared the * spell!" -wdr drt_spell_already_casting_2=\
   /set dr_spell_casting=yes
 
 ; autocasts: Cast and pop off casting
@@ -60,7 +68,6 @@
 /def -t"Your target pattern dissipates*, but the main spell remains intact." -wdr_spell_retarget=\
   /dr target %;\
   /set dr_spell_casting=yes
-
 
 ; spell failure, or runout.
 /def -t"Your concentration slips for a moment, and your spell is lost." -wdr drt_spell_lost=\
