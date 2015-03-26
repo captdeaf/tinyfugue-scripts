@@ -170,6 +170,9 @@
 /def -mglob -t"When you have finished working you determine the * is uneven." -wdr dr_craft_rasp_2=\
   /dr_craft_rasp
 
+/def -mglob -t"When you have finished working, you * determine it is no longer level." -wdr dr_craft_rasp_3=\
+  /dr_craft_rasp
+
 ; Haven't seen this yet, but it's there..
 /def -mglob -t"Upon finishing you see some discolored areas on the *" -wdr dr_craft_polish=\
   /drc get polish=apply polish to %{dr_crafting}=~=stow polish
@@ -180,3 +183,40 @@
 /def -mglob -t"Upon completion you notice several rough, jagged *" -wdr dr_craft_riffler=\
   /drc get rifflers=rub %{dr_crafting} with rifflers=~=stow rifflers
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; Forging - Smelting, hammering, etc.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+/def -p10 -h"SEND smelt" -mglob -wdr dr_craft_smelt=\
+  /set dr_cycle=/dr_craft_smelt_stir
+
+/def dr_craft_smelt_stir=\
+  /drc get stirring rod=stir crucible with rod=~=stow my stirring rod
+
+/def -mglob -t"Upon finishing you observe clumps of molten metal accumulating *" -wdr dr_craft_smelt_turn=\
+  /drc turn crucible
+
+/def -mglob -t"As you complete working the fire dies down and needs more fuel." -wdr dr_craft_smelt_fuel=\
+  /drc get shovel=push fuel with shovel=~=stow my shovel
+
+/def -mglob -t"At last the metal appears to be thoroughly mixed and you pour it into an ingot mold.*" -wdr dr_craft_smelt_complete=\
+  /set dr_cycle=
+
+/def -mglob -t"As you finish working the fire dims and produces less heat from the stifled coals." -wdr dr_craft_smelt_bellows=\
+  /drc get bellows=push my bellows=~=stow my bellows
+
+/def -mglob -t"As you finish the fire flickers and is unable to consume its fuel." -wdr dr_craft_smelt_bellows_2=\
+  /dr_craft_smelt_bellows
+
+/def -p10 -h"SEND forge * *" -mglob -wdr dr_craft_forge=\
+  /let mat=%{-2} %;\
+  /set dr_crafting=%{-2} %;\
+  /dr study my book %;\
+  /dr_stow_hands %;\
+  /drc get hammer=get tongs=pound %{mat} with my hammer=~=stow my hammer=stow my tongs %;\
+  /set dr_cycle=/dr_craft_pound
+
+/def dr_craft_forge_pound=\
+  /drc get hammer=get tongs=pound %{dr_crafting} with my hammer=~=stow my hammer=stow my tongs
+
+/def -mglob -t"You notice the * would benefit from some soft reworking." -wdr dr_craft_forge_turn=\
+  /drc get hammer=get tongs=turn %{dr_crafting} with my tongs=~=stow my hammer=stow my tongs
