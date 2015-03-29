@@ -49,27 +49,51 @@
     /if (%{*} =/ "/*") \
       /eval %{*} %;\
     /else \
-      /send -wdr $[replace("ENEMY",%{dr_enemy},%{*})] %;\
+      /let txt=$[replace("ENEMY",%{dr_enemy},%{*})] %;\
+      /send -wdr %{txt} %;\
+      /set dr_lasttyped= %;\
     /endif%; \
   /endif
 
 ; Set lasttypetime to load time, why not.
 /eval /set dr_lasttypetime=$[time()]
 
+; Because in drc might be "hide=~=", including a wait, but
+; sometimes "hide" gets de-cqueued, then immediately a trigger
+; inserts "poach" into the queue, so there's no wait between
+; hide and poach. So when dequeing from cqueue, we copy over
+; the waits.
+;
+; So first we move the first item, then any subsequent ~s,
+/def dr_move_queue=\
+  /split %{dr_cqueue} %;\
+  /set dr_queue=%{P1} %;\
+  /set dr_cqueue=%{P2} %;\
+  /split %{dr_cqueue} %;\
+  /while (strlen(%{P1}) > 0 & %{P1} !~ "~") \
+    /set dr_queue=%{dr_queue}=%{P1} %;\
+    /set dr_cqueue=%{P2} %;\
+    /split %{dr_cqueue} %;\
+  /done %;\
+  /set dr_queue=%{dr_queue}=~ %;\
+  /set dr_cqueue=%{P2}
+
 /def dr_dequeue=\
   /if (%{dr_idle} < 600) \
+    /if (strlen(%{dr_queue}) < 1) \
+      /if (dr_spell_waiting() != 0) \
+        /dr_spell_cast %;\
+      /elseif (strlen(%{dr_cqueue})) \
+        /dr_move_queue %;\
+      /elseif (strlen(%{dr_cycle})) \
+        /set dr_cqueue=%{dr_cycle} %;\
+        /dr_move_queue %;\
+      /endif %;\
+    /endif %;\
     /if (strlen(%{dr_queue})) \
       /split %{dr_queue} %;\
       /set dr_queue=%{P2} %;\
       /dr_send %{P1} %;\
-    /elseif (dr_spell_waiting() != 0) \
-      /dr_spell_cast %;\
-    /elseif (strlen(%{dr_cqueue})) \
-      /split %{dr_cqueue} %;\
-      /set dr_cqueue=%{P2} %;\
-      /dr_send %{P1} %;\
-    /elseif (strlen(%{dr_cycle})) \
-      /set dr_cqueue=%{dr_cycle} %;\
     /endif %;\
   /endif
 
@@ -78,12 +102,6 @@
     /split %{dr_queue}%;\
     /if (%{P1} =~ "~") \
       /set dr_queue=%{P2}%;\
-      /dr_cleanqueue %;\
-    /endif %;\
-  /elseif (strlen(%{dr_cqueue})) \
-    /split %{dr_cqueue}%;\
-    /if (%{P1} =~ "~") \
-      /set dr_cqueue=%{P2}%;\
       /dr_cleanqueue %;\
     /endif %;\
   /endif
