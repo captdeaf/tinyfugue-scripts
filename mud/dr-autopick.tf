@@ -1,11 +1,14 @@
 ; Disarming and Picking.
 /set dr_picking=
+/def dr_loot=\
+  /drc open %{*}=~=fill my pouch with my %{*} %;\
+  /drc get coin from %{*}=~=get coin from %{*}=~=get coin from %{*}=~=get coin from %{*} %;\
+  /drc dismantle %{*}
+
 /def dr_queue_disarm=\
   /drc disarm id=~=disarm=~=disarm analy=~=disarm harvest=~=empty left %;\
-  /drc get lockpick=~=pick id=~=pick blind=~=~=stow lockpick %;\
-  /drc open %{dr_picking}=~=fill my pouch with my %{dr_picking} %;\
-  /drc get coin from %{dr_picking}=~=get coin from %{dr_picking}=~=get coin from %{dr_picking}=~=get coin from %{dr_picking} %;\
-  /drc dismantle %{dr_picking}
+  /drc pick id=~=pick blind %;\
+  /dr_loot %{dr_picking}
 /def -p10 -h"SEND pickit *" -wdr dr_pickit=\
   /set dr_picking=%{-1} %;\
   /echo Auto-picking %{dr_picking} ...%;\
@@ -33,7 +36,3 @@
 /def -t"You discover another lock protecting the * contents as soon as you remove this one." -mglob -wdr drt_pick_again=\
   /dr pick id %;\
   /dr pick blind
-
-; Lockpick breaks
-/def -t"You quickly notice * you discard the now useless lockpick." -mglob -wdr drt_lockpick_break=\
-  /dr get lockpick=pick blind
