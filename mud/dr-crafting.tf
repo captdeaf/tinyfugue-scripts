@@ -33,11 +33,12 @@
   /dr scrape %{dr_crafting} with scraper careful %;\
   /set dr_cycle=scrape %{dr_crafting} with scraper careful
 
-; Complete tanning.
+; Complete tanning, and repeat. I often find myself tanning a lot of hides at once.
 /def -mglob -t"The * looks as clean as you can make it." -wdr dr_craft_scrape_done=\
   /drc stow my hide scraper %;\
   /drc get tanning lotion=pour tanning lotion on %{dr_crafting}=~=stow tanning lotion=stow %{dr_crafting} %;\
-  /set dr_cycle=
+  /drc get my hide scraper %;\
+  /drc get %{dr_crafting} from bundle
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Tailoring.
@@ -48,6 +49,7 @@
   /let mat=%{-3} %;\
   /let count=%{2} %;\
   /let len=%{3} %;\
+  /dr_stow_hands %;\
   /drc get %{mat} from back %;\
   /repeat -1 %{count} /drc get yardstick=mark my %{mat} to %{len} yards=stow my yardstick=get scissors=cut my %{mat} with my scissors=stow my scissors %;\
   /repeat -$[1+%{count}] 1 /drc stow my %{mat}=~$[strrep(strcat("=stow ",%{mat}), %{count})]
@@ -55,7 +57,7 @@
 /def -p10 -h"SEND tailor * *" -mglob -wdr dr_craft_tailor_start=\
   /set dr_crafting=%{-2} %;\
   /echo Crafting '%{-2}', from '%{2}' %;\
-  /drc study my book=~=stow my book=get scissors=cut my %{2} with my scissors=~=stow my scissors %;\
+  /drc study my book=~=stow my book=get %{2} from my back=get scissors=cut my %{2} with my scissors=~=stow my scissors %;\
   /set dr_cycle=/dr_craft_sew_it
 
 ; Tailoring needs
@@ -147,7 +149,7 @@
 /def -p10 -h"SEND bcarve *" -mglob -wdr dr_craft_carve_bones=\
   /set dr_crafting=%{-1} %;\
   /echo Crafting '%{dr_crafting}', from 'bone stack' %;\
-  /drc study my book=~=stow my book=get bone saw=~=carve my stack with my bone saw=~=stow my bone saw %;\
+  /drc study my book=~=stow my book=get stack=get bone saw=~=carve my stack with my bone saw=~=stow my bone saw %;\
   /set dr_cycle=/dr_craft_saw_it
 
 ; Stonecarving loop
@@ -208,15 +210,42 @@
   /dr_craft_smelt_bellows
 
 /def -p10 -h"SEND forge * *" -mglob -wdr dr_craft_forge=\
-  /let mat=%{-2} %;\
+  /let mat=%{2} %;\
   /set dr_crafting=%{-2} %;\
   /dr study my book %;\
   /dr_stow_hands %;\
+  /drc get %{mat}=put %{mat} on anvil %;\
   /drc get hammer=get tongs=pound %{mat} with my hammer=~=stow my hammer=stow my tongs %;\
-  /set dr_cycle=/dr_craft_pound
+  /set dr_cycle=/dr_craft_forge_pound
 
 /def dr_craft_forge_pound=\
-  /drc get hammer=get tongs=pound %{dr_crafting} with my hammer=~=stow my hammer=stow my tongs
+  /drc get hammer=get tongs=pound %{dr_crafting} on anvil with my hammer=~=stow my hammer=stow my tongs
 
 /def -mglob -t"You notice the * would benefit from some soft reworking." -wdr dr_craft_forge_turn=\
-  /drc get hammer=get tongs=turn %{dr_crafting} with my tongs=~=stow my hammer=stow my tongs
+  /drc get hammer=get tongs=turn %{dr_crafting} on anvil with my tongs=~=stow my hammer=stow my tongs
+
+/def -mglob -t"The * could use some straightening along the horn of the anvil." -wdr dr_craft_forge_turn_2=\
+  /drc get hammer=get tongs=turn %{dr_crafting} on anvil with my tongs=~=stow my hammer=stow my tongs
+
+/def -mglob -t"The * complete and ready for a quench hardening in the* tub." -wdr dr_craft_forge_quench=\
+  /set dr_cycle= %;\
+  /drc push tub=get %{dr_crafting}
+
+/def -mglob -t"The metal now appears ready for cooling in the *tub." -wdr dr_craft_forge_quench_2=\
+  /dr_craft_forge_quench
+
+/def -mregexp -t"^You need another (.*?) to continue crafting .* You believe you can assemble the two ingredients together once you acquire them.$" -wdr dr_craft_forge_assemble=\
+  /let item=$[last(%{P1})] %;\
+  /drc get %{dr_crafting} on anvil=get %{item}=assemble my %{item} with my %{dr_crafting}
+
+/def -p10 -h"SEND grind *" -mglob -wdr dr_craft_grind=\
+  /set dr_crafting=%{-1} %;\
+  /dr_stow_hands %;\
+  /drc get %{dr_crafting} from my back=turn grindstone=~=turn grindstone=~=turn grindstone=~=turn grindstone=~=push grindstone with my %{dr_crafting} %;\
+
+/def -mglob -t"With grinding complete, the metal now needs protection by pouring oil on it." -wdr dr_craft_forge_oil=\
+  /drc get oil from back=pour oil on my %{dr_crafting}=~=stow oil
+
+/def -mglob -t"The worked metal looks to be in need of some oil to preserve and protect it." -wdr dr_craft_forge_oil_2=\
+  /dr_craft_forge_oil
+
