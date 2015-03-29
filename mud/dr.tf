@@ -52,18 +52,18 @@
 /def -p10 -h"SEND lrah" -wdr dr_lrah=/dr retreat=retreat=load=~=aim=retreat=retreat=hide
 /def -p10 -h"SEND rah" -wdr dr_rah=/dr aim=retreat=hide
 
-/def -p10 -h"SEND asl" -wdr dr_asl=/dr arrange for skin=~=skin=~=loot
+/def -p10 -h"SEND asl" -wdr dr_asl=/dr arrange for skin=~=arrange=~=arrange=~=arrange=~=arrange=~=skin=~=loot
 /def -p10 -h"SEND sa" -wdr dr_sa=/dr stow long arrow=stow long arrow=stow long arrow
 /def -p10 -h"SEND sr" -wdr dr_sr=/dr stow small rock=stow small rock=stow small rock
 /def -p10 -h"SEND gc" -wdr dr_gc=/dr get coin=get coin
 
 /def -p10 -h"SEND strip" -wdr dr_strip=\
-  /dr remove coat=stow coat=remove aventail=stow aventail=remove gloves=stow gloves %;\
-  /dr remove greaves=stow greaves=remove helm=stow helm=remove buckler=stow buckler
+  /dr remove sleeves=stow sleeves=remove cowl=stow cowl %;\
+  /dr remove greaves=stow greaves=remove jerkin=stow jerkin=remove buckler=stow buckler
 
 /def -p10 -h"SEND gearup" -wdr dr_gearup=\
-  /dr get coat=wear coat=get aventail=wear aventail=get gloves=wear gloves %;\
-  /dr get greaves=wear greaves=get helm=wear helm=get buckler=wear buckler
+  /dr get sleeves=wear sleeves=get cowl=wear cowl %;\
+  /dr get greaves=wear greaves=get jerkin=wear jerkin=get buckler=wear buckler
 
 ; autofire:
 /def -t"You think you have your best shot possible now." -wdr drt_fire=/dr poach=fire
@@ -73,15 +73,6 @@
 /def -wdr -mregexp -t"can be inflicted.*?by landing an? (.*)\\.$" drt_analyzed=\
   /let moves=$[replace(", an ","=~=",replace(", a ","=~=",replace(" and",",",%{P1})))] %;\
   /drc ~=%{moves}
-
-; Auto-switch to block when telek gets lodged.
-; The telek lodges itself shallowly into the cougar!
-/def -t"The telek lodges itself shallowly into the *" -mglob -wdr drt_autoblock=/dr stance set 100 0 80 100
-
-; Clear queue and cycle
-; There is nothing else to face!
-/def -t"There is nothing else to face!" -mglob -wdr drt_stopcycle_fighting=\
-  /set dr_cycle=
 
 ; Auto-approach:
 ; You must be closer to use tactical abilities on your opponent.
