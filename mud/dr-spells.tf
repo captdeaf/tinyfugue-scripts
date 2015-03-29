@@ -35,7 +35,7 @@
   /if (strlen(%{dr_spell_queue}) > 0) \
     /split %{dr_spell_queue} %;\
     /set dr_spell_queue=%{P2} %;\
-    /dr %{P1} %;\
+    /dr %{P1}=~ %;\
     /set dr_casting=yes %;\
   /endif
 
@@ -56,16 +56,19 @@
 /def -mglob -t"You have already fully prepared the * spell!" -wdr drt_spell_already_casting_2=\
   /set dr_spell_casting=yes
 
+/def -mglob -t"But you're already preparing a spell!" -wdr drt_spell_already_casting_3=\
+  /set dr_spell_casting=yes
+
 ; autocasts: Cast and pop off casting
 /def -mglob -t"Your formation of a targeting*has completed." -wdr drt_cast_target=\
-  /dr cast %;\
+  /dr cast=~ %;\
   /set dr_spell_casting=no
 
 /def -t"You feel fully prepared to cast your spell." -wdr drt_cast_area=\
-  /dr cast %;\
+  /dr cast=~ %;\
   /set dr_spell_casting=no
 
-/def -t"Your target pattern dissipates*, but the main spell remains intact." -wdr_spell_retarget=\
+/def -t"Your target pattern dissipates*, but the main spell remains intact." -wdr dr_spell_retarget=\
   /dr target %;\
   /set dr_spell_casting=yes
 
